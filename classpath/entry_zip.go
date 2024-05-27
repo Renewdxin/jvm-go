@@ -26,6 +26,7 @@ func (self *ZipEntry) String() string {
 
 // 从zip文件里面提取class文件
 func (self *ZipEntry) readClass(className string) ([]byte, Entry, error) {
+	// open zip file
 	r, err := zip.OpenReader(self.absPath)
 	if err != nil {
 		return nil, nil, err
