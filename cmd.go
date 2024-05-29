@@ -1,8 +1,12 @@
 package main
 
-import "flag"
-import "fmt"
-import "os"
+import (
+	"flag"
+	"fmt"
+	"jvm-go/classpath"
+	"os"
+	"strings"
+)
 
 type Cmd struct {
 	helpFlag         bool
@@ -38,6 +42,12 @@ func parseCmd() *Cmd {
 	return cmd
 }
 
+
 func startJVM(cmd *Cmd) {
-	fmt.Printf("classpath: %s class %s args %v\n", cmd.cpOption, cmd.class, cmd.args)
+	cp := classpath.Parse(cmd.XjreOption, cmd.cpOption)
+	className := strings.Replace(cmd.class, ".", "/", -1)
+	cf := loadClass(className, cp)
+	fmt.Println(cmd.class)
+	printClassInfo(cf)
 }
+  
