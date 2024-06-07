@@ -11,7 +11,7 @@ type BranchInstruciton struct {
 	Offset int
 }
 
-type Index8Indtruction struct {
+type Index8Instruction struct {
 	Index uint
 }
 
@@ -30,7 +30,7 @@ func (self *NoOperandsInstruction) FetchOperands(reader *BytecodeReader) {
 }
 
 
-func (self *Index8Indtruction) FetchOperands(reader *BytecodeReader) {
+func (self *Index8Instruction) FetchOperands(reader *BytecodeReader) {
 	self.Index = int(reader.ReadUint8())
 }
 

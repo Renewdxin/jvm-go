@@ -2,7 +2,7 @@ package rtda
 
 type Frame struct {
 	lower *Frame
-	localVars localVars
+	localVars LocalVars
 	operandStack *OperandStack
 }
 
