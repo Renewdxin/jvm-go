@@ -16,7 +16,7 @@ func (self *Stack) push(frame *Frame) {
 	if self.size >= self.maxSize {
 	  panic("java.lang.StackOverflowError")
 	}
-	if self._top ! = nil {
+	if self._top != nil {
 	  frame.lower = self._top
 	}
 	self._top = frame

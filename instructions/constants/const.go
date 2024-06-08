@@ -29,5 +29,5 @@ type LCONST_0 struct{ base.NoOperandsInstruction }
 type LCONST_1 struct{ base.NoOperandsInstruction }
 
 func (self *ACONST_NULL) Execute(frame *rtda.Frame) {
-	frame.OperandStack().pushRef(nil)
+	frame.OperandStack().PushRef(nil)
 }
