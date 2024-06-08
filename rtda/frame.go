@@ -44,3 +44,4 @@ func (self *Frame) SetNextPC(nextPC int) {
 func (self *Frame) RevertNextPC() {
 	self.nextPC = self.thread.pc
 }
+

@@ -59,3 +59,7 @@ func (self LocalVars) SetRef(index uint, ref *Object) {
 func (self LocalVars) GetRef(index uint) *Object {
 	return self[index].ref
 }
+
+func (self LocalVars) SetSlot(index uint, slot Slot) {
+	self[index] = slot
+}

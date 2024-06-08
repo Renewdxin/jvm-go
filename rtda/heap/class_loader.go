@@ -1,6 +1,10 @@
 package heap
 
-import "jvm-go/classpath"
+import (
+	"fmt"
+	"jvm-go/classfile"
+	"jvm-go/classpath"
+)
 
 /*
 class names:
