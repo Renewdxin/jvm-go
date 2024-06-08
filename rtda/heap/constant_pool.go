@@ -1,7 +1,7 @@
 package heap
 
 import "fmt"
-import "jvmgo/ch11/classfile"
+import "jvm-go/classfile"
 
 type Constant interface{}
 

@@ -1,8 +1,6 @@
 package heap
 
-import "fmt"
-import "jvmgo/ch11/classfile"
-import "jvmgo/ch11/classpath"
+import "jvm-go/classpath"
 
 /*
 class names:

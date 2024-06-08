@@ -2,38 +2,39 @@ package base
 
 import "jvm-go/rtda"
 
-type Instructions interface {
+type Instruction interface {
 	FetchOperands(reader *BytecodeReader)
 	Execute(frame *rtda.Frame)
 }
 
-type BranchInstruciton struct {
+type NoOperandsInstruction struct {
+	// empty
+}
+
+func (self *NoOperandsInstruction) FetchOperands(reader *BytecodeReader) {
+	// nothing to do
+}
+
+type BranchInstruction struct {
 	Offset int
+}
+
+func (self *BranchInstruction) FetchOperands(reader *BytecodeReader) {
+	self.Offset = int(reader.ReadInt16())
 }
 
 type Index8Instruction struct {
 	Index uint
 }
 
-type Index16Indtruction struct {
+func (self *Index8Instruction) FetchOperands(reader *BytecodeReader) {
+	self.Index = uint(reader.ReadUint8())
+}
+
+type Index16Instruction struct {
 	Index uint
 }
 
-type NoOperandsInstruction struct {}
-
-func (self *BranchInstruciton) FetchOperands(reader *BytecodeReader) {
-	self.Offset = int(reader.ReadInt16())
-}
-
-func (self *NoOperandsInstruction) FetchOperands(reader *BytecodeReader) {
-
-}
-
-
-func (self *Index8Instruction) FetchOperands(reader *BytecodeReader) {
-	self.Index = int(reader.ReadUint8())
-}
-
-func (self *Index16Indtruction) FetchOperands(reader *BytecodeReader) {
-	self.Index = int(reader.ReadUint16())
+func (self *Index16Instruction) FetchOperands(reader *BytecodeReader) {
+	self.Index = uint(reader.ReadUint16())
 }
