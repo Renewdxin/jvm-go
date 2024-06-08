@@ -14,21 +14,25 @@ func NewThread() *Thread {
 	}
 }
 
-func (self *Thread) NewFrame(method *heap.Method) *Frame {
-	return newFrame(self, method)
+func (thread *Thread) NewFrame(method *heap.Method) *Frame {
+	return newFrame(thread, method)
 }
 
-func (self *Thread) PushFrame(frame *Frame) {
-	self.stack.push(frame)
+func (thread *Thread) PushFrame(frame *Frame) {
+	thread.stack.push(frame)
 }
-func (self *Thread) PopFrame() *Frame {
-	return self.stack.pop()
-}
-
-func (self *Thread) CurrentFrame() *Frame {
-	return self.stack.top()
+func (thread *Thread) PopFrame() *Frame {
+	return thread.stack.pop()
 }
 
-func (self *Thread) PC() int{
-	return self.pc
+func (thread *Thread) CurrentFrame() *Frame {
+	return thread.stack.top()
+}
+
+func(thread *Thread) TopFrame() *Frame {
+	return thread.stack.top()
+}
+
+func (thread*Thread) PC() int{
+	return thread.pc
 }
