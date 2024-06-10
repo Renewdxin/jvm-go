@@ -11,62 +11,62 @@ type ClassMember struct {
 	class          *Class
 }
 
-func (self *ClassMember) copyMemberInfo(memberInfo *classfile.MemberInfo) {
-	self.accessFlags = memberInfo.AccessFlags()
-	self.name = memberInfo.Name()
-	self.descriptor = memberInfo.Descriptor()
+func (clm *ClassMember) copyMemberInfo(memberInfo *classfile.MemberInfo) {
+	clm.accessFlags = memberInfo.AccessFlags()
+	clm.name = memberInfo.Name()
+	clm.descriptor = memberInfo.Descriptor()
 }
 
-func (self *ClassMember) IsPublic() bool {
-	return 0 != self.accessFlags&ACC_PUBLIC
+func (clm *ClassMember) IsPublic() bool {
+	return 0 != clm.accessFlags&ACC_PUBLIC
 }
-func (self *ClassMember) IsPrivate() bool {
-	return 0 != self.accessFlags&ACC_PRIVATE
+func (clm *ClassMember) IsPrivate() bool {
+	return 0 != clm.accessFlags&ACC_PRIVATE
 }
-func (self *ClassMember) IsProtected() bool {
-	return 0 != self.accessFlags&ACC_PROTECTED
+func (clm *ClassMember) IsProtected() bool {
+	return 0 != clm.accessFlags&ACC_PROTECTED
 }
-func (self *ClassMember) IsStatic() bool {
-	return 0 != self.accessFlags&ACC_STATIC
+func (clm *ClassMember) IsStatic() bool {
+	return 0 != clm.accessFlags&ACC_STATIC
 }
-func (self *ClassMember) IsFinal() bool {
-	return 0 != self.accessFlags&ACC_FINAL
+func (clm *ClassMember) IsFinal() bool {
+	return 0 != clm.accessFlags&ACC_FINAL
 }
-func (self *ClassMember) IsSynthetic() bool {
-	return 0 != self.accessFlags&ACC_SYNTHETIC
+func (clm *ClassMember) IsSynthetic() bool {
+	return 0 != clm.accessFlags&ACC_SYNTHETIC
 }
 
 // getters
-func (self *ClassMember) AccessFlags() uint16 {
-	return self.accessFlags
+func (clm *ClassMember) AccessFlags() uint16 {
+	return clm.accessFlags
 }
-func (self *ClassMember) Name() string {
-	return self.name
+func (clm *ClassMember) Name() string {
+	return clm.name
 }
-func (self *ClassMember) Descriptor() string {
-	return self.descriptor
+func (clm *ClassMember) Descriptor() string {
+	return clm.descriptor
 }
-func (self *ClassMember) Signature() string {
-	return self.signature
+func (clm *ClassMember) Signature() string {
+	return clm.signature
 }
-func (self *ClassMember) AnnotationData() []byte {
-	return self.annotationData
+func (clm *ClassMember) AnnotationData() []byte {
+	return clm.annotationData
 }
-func (self *ClassMember) Class() *Class {
-	return self.class
+func (clm *ClassMember) Class() *Class {
+	return clm.class
 }
 
 // jvms 5.4.4
-func (self *ClassMember) isAccessibleTo(d *Class) bool {
-	if self.IsPublic() {
+func (clm *ClassMember) isAccessibleTo(d *Class) bool {
+	if clm.IsPublic() {
 		return true
 	}
-	c := self.class
-	if self.IsProtected() {
+	c := clm.class
+	if clm.IsProtected() {
 		return d == c || d.IsSubClassOf(c) ||
 			c.GetPackageName() == d.GetPackageName()
 	}
-	if !self.IsPrivate() {
+	if !clm.IsPrivate() {
 		return c.GetPackageName() == d.GetPackageName()
 	}
 	return d == c

@@ -2,37 +2,58 @@ package rtda
 
 import "jvm-go/rtda/heap"
 
+/*
+JVM
+  Thread
+    pc
+    Stack
+      Frame
+        LocalVars
+        OperandStack
+*/
 type Thread struct {
-	pc int
-	// pointer to stack
+	pc    int // the address of the instruction currently being executed
 	stack *Stack
+	// todo
 }
 
 func NewThread() *Thread {
-    return &Thread{
+	return &Thread{
 		stack: newStack(1024),
 	}
 }
 
-func (thread *Thread) NewFrame(method *heap.Method) *Frame {
-	return newFrame(thread, method)
+func (self *Thread) PC() int {
+	return self.pc
+}
+func (self *Thread) SetPC(pc int) {
+	self.pc = pc
 }
 
-func (thread *Thread) PushFrame(frame *Frame) {
-	thread.stack.push(frame)
+func (self *Thread) PushFrame(frame *Frame) {
+	self.stack.push(frame)
 }
-func (thread *Thread) PopFrame() *Frame {
-	return thread.stack.pop()
-}
-
-func (thread *Thread) CurrentFrame() *Frame {
-	return thread.stack.top()
+func (self *Thread) PopFrame() *Frame {
+	return self.stack.pop()
 }
 
-func(thread *Thread) TopFrame() *Frame {
-	return thread.stack.top()
+func (self *Thread) CurrentFrame() *Frame {
+	return self.stack.top()
+}
+func (self *Thread) TopFrame() *Frame {
+	return self.stack.top()
+}
+func (self *Thread) GetFrames() []*Frame {
+	return self.stack.getFrames()
 }
 
-func (thread*Thread) PC() int{
-	return thread.pc
+func (self *Thread) IsStackEmpty() bool {
+	return self.stack.isEmpty()
+}
+func (self *Thread) ClearStack() {
+	self.stack.clear()
+}
+
+func (self *Thread) NewFrame(method *heap.Method) *Frame {
+	return newFrame(self, method)
 }

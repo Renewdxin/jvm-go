@@ -1,10 +1,8 @@
 package heap
 
-import (
-	"fmt"
-	"jvm-go/classfile"
-	"jvm-go/classpath"
-)
+import "fmt"
+import "jvm-go/classfile"
+import "jvm-go/classpath"
 
 /*
 class names:
@@ -31,9 +29,9 @@ func NewClassLoader(cp *classpath.Classpath, verboseFlag bool) *ClassLoader {
 	return loader
 }
 
-func (self *ClassLoader) loadBasicClasses() {
-	jlClassClass := self.LoadClass("java/lang/Class")
-	for _, class := range self.classMap {
+func (cl *ClassLoader) loadBasicClasses() {
+	jlClassClass := cl.LoadClass("java/lang/Class")
+	for _, class := range cl.classMap {
 		if class.jClass == nil {
 			class.jClass = jlClassClass.NewObject()
 			class.jClass.extra = class
@@ -41,38 +39,38 @@ func (self *ClassLoader) loadBasicClasses() {
 	}
 }
 
-func (self *ClassLoader) loadPrimitiveClasses() {
+func (cl *ClassLoader) loadPrimitiveClasses() {
 	for primitiveType, _ := range primitiveTypes {
-		self.loadPrimitiveClass(primitiveType)
+		cl.loadPrimitiveClass(primitiveType)
 	}
 }
 
-func (self *ClassLoader) loadPrimitiveClass(className string) {
+func (cl *ClassLoader) loadPrimitiveClass(className string) {
 	class := &Class{
 		accessFlags: ACC_PUBLIC, // todo
 		name:        className,
-		loader:      self,
+		loader:      cl,
 		initStarted: true,
 	}
-	class.jClass = self.classMap["java/lang/Class"].NewObject()
+	class.jClass = cl.classMap["java/lang/Class"].NewObject()
 	class.jClass.extra = class
-	self.classMap[className] = class
+	cl.classMap[className] = class
 }
 
-func (self *ClassLoader) LoadClass(name string) *Class {
-	if class, ok := self.classMap[name]; ok {
+func (cl *ClassLoader) LoadClass(name string) *Class {
+	if class, ok := cl.classMap[name]; ok {
 		// already loaded
 		return class
 	}
 
 	var class *Class
 	if name[0] == '[' { // array class
-		class = self.loadArrayClass(name)
+		class = cl.loadArrayClass(name)
 	} else {
-		class = self.loadNonArrayClass(name)
+		class = cl.loadNonArrayClass(name)
 	}
 
-	if jlClassClass, ok := self.classMap["java/lang/Class"]; ok {
+	if jlClassClass, ok := cl.classMap["java/lang/Class"]; ok {
 		class.jClass = jlClassClass.NewObject()
 		class.jClass.extra = class
 	}
@@ -80,36 +78,36 @@ func (self *ClassLoader) LoadClass(name string) *Class {
 	return class
 }
 
-func (self *ClassLoader) loadArrayClass(name string) *Class {
+func (cl *ClassLoader) loadArrayClass(name string) *Class {
 	class := &Class{
 		accessFlags: ACC_PUBLIC, // todo
 		name:        name,
-		loader:      self,
+		loader:      cl,
 		initStarted: true,
-		superClass:  self.LoadClass("java/lang/Object"),
+		superClass:  cl.LoadClass("java/lang/Object"),
 		interfaces: []*Class{
-			self.LoadClass("java/lang/Cloneable"),
-			self.LoadClass("java/io/Serializable"),
+			cl.LoadClass("java/lang/Cloneable"),
+			cl.LoadClass("java/io/Serializable"),
 		},
 	}
-	self.classMap[name] = class
+	cl.classMap[name] = class
 	return class
 }
 
-func (self *ClassLoader) loadNonArrayClass(name string) *Class {
-	data, entry := self.readClass(name)
-	class := self.defineClass(data)
+func (cl *ClassLoader) loadNonArrayClass(name string) *Class {
+	data, entry := cl.readClass(name)
+	class := cl.defineClass(data)
 	link(class)
 
-	if self.verboseFlag {
+	if cl.verboseFlag {
 		fmt.Printf("[Loaded %s from %s]\n", name, entry)
 	}
 
 	return class
 }
 
-func (self *ClassLoader) readClass(name string) ([]byte, classpath.Entry) {
-	data, entry, err := self.cp.ReadClass(name)
+func (cl *ClassLoader) readClass(name string) ([]byte, classpath.Entry) {
+	data, entry, err := cl.cp.ReadClass(name)
 	if err != nil {
 		panic("java.lang.ClassNotFoundException: " + name)
 	}
@@ -117,13 +115,13 @@ func (self *ClassLoader) readClass(name string) ([]byte, classpath.Entry) {
 }
 
 // jvms 5.3.5
-func (self *ClassLoader) defineClass(data []byte) *Class {
+func (cl *ClassLoader) defineClass(data []byte) *Class {
 	class := parseClass(data)
 	hackClass(class)
-	class.loader = self
+	class.loader = cl
 	resolveSuperClass(class)
 	resolveInterfaces(class)
-	self.classMap[class.name] = class
+	cl.classMap[class.name] = class
 	return class
 }
 

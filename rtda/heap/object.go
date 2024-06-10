@@ -15,44 +15,44 @@ func newObject(class *Class) *Object {
 }
 
 // getters & setters
-func (self *Object) Class() *Class {
-	return self.class
+func (ob *Object) Class() *Class {
+	return ob.class
 }
-func (self *Object) Data() interface{} {
-	return self.data
+func (ob *Object) Data() interface{} {
+	return ob.data
 }
-func (self *Object) Fields() Slots {
-	return self.data.(Slots)
+func (ob *Object) Fields() Slots {
+	return ob.data.(Slots)
 }
-func (self *Object) Extra() interface{} {
-	return self.extra
+func (ob *Object) Extra() interface{} {
+	return ob.extra
 }
-func (self *Object) SetExtra(extra interface{}) {
-	self.extra = extra
+func (ob *Object) SetExtra(extra interface{}) {
+	ob.extra = extra
 }
 
-func (self *Object) IsInstanceOf(class *Class) bool {
-	return class.IsAssignableFrom(self.class)
+func (ob *Object) IsInstanceOf(class *Class) bool {
+	return class.IsAssignableFrom(ob.class)
 }
 
 // reflection
-func (self *Object) GetRefVar(name, descriptor string) *Object {
-	field := self.class.getField(name, descriptor, false)
-	slots := self.data.(Slots)
+func (ob *Object) GetRefVar(name, descriptor string) *Object {
+	field := ob.class.getField(name, descriptor, false)
+	slots := ob.data.(Slots)
 	return slots.GetRef(field.slotId)
 }
-func (self *Object) SetRefVar(name, descriptor string, ref *Object) {
-	field := self.class.getField(name, descriptor, false)
-	slots := self.data.(Slots)
+func (ob *Object) SetRefVar(name, descriptor string, ref *Object) {
+	field := ob.class.getField(name, descriptor, false)
+	slots := ob.data.(Slots)
 	slots.SetRef(field.slotId, ref)
 }
-func (self *Object) SetIntVar(name, descriptor string, val int32) {
-	field := self.class.getField(name, descriptor, false)
-	slots := self.data.(Slots)
+func (ob *Object) SetIntVar(name, descriptor string, val int32) {
+	field := ob.class.getField(name, descriptor, false)
+	slots := ob.data.(Slots)
 	slots.SetInt(field.slotId, val)
 }
-func (self *Object) GetIntVar(name, descriptor string) int32 {
-	field := self.class.getField(name, descriptor, false)
-	slots := self.data.(Slots)
+func (ob *Object) GetIntVar(name, descriptor string) int32 {
+	field := ob.class.getField(name, descriptor, false)
+	slots := ob.data.(Slots)
 	return slots.GetInt(field.slotId)
 }

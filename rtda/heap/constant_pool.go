@@ -55,8 +55,8 @@ func newConstantPool(class *Class, cfCp classfile.ConstantPool) *ConstantPool {
 	return rtCp
 }
 
-func (self *ConstantPool) GetConstant(index uint) Constant {
-	if c := self.consts[index]; c != nil {
+func (cp *ConstantPool) GetConstant(index uint) Constant {
+	if c := cp.consts[index]; c != nil {
 		return c
 	}
 	panic(fmt.Sprintf("No constants at index %d", index))

@@ -18,34 +18,34 @@ func newFields(class *Class, cfFields []*classfile.MemberInfo) []*Field {
 	}
 	return fields
 }
-func (self *Field) copyAttributes(cfField *classfile.MemberInfo) {
+func (fi *Field) copyAttributes(cfField *classfile.MemberInfo) {
 	if valAttr := cfField.ConstantValueAttribute(); valAttr != nil {
-		self.constValueIndex = uint(valAttr.ConstantValueIndex())
+		fi.constValueIndex = uint(valAttr.ConstantValueIndex())
 	}
 }
 
-func (self *Field) IsVolatile() bool {
-	return 0 != self.accessFlags&ACC_VOLATILE
+func (fi *Field) IsVolatile() bool {
+	return 0 != fi.accessFlags&ACC_VOLATILE
 }
-func (self *Field) IsTransient() bool {
-	return 0 != self.accessFlags&ACC_TRANSIENT
+func (fi *Field) IsTransient() bool {
+	return 0 != fi.accessFlags&ACC_TRANSIENT
 }
-func (self *Field) IsEnum() bool {
-	return 0 != self.accessFlags&ACC_ENUM
+func (fi *Field) IsEnum() bool {
+	return 0 != fi.accessFlags&ACC_ENUM
 }
 
-func (self *Field) ConstValueIndex() uint {
-	return self.constValueIndex
+func (fi *Field) ConstValueIndex() uint {
+	return fi.constValueIndex
 }
-func (self *Field) SlotId() uint {
-	return self.slotId
+func (fi *Field) SlotId() uint {
+	return fi.slotId
 }
-func (self *Field) isLongOrDouble() bool {
-	return self.descriptor == "J" || self.descriptor == "D"
+func (fi *Field) isLongOrDouble() bool {
+	return fi.descriptor == "J" || fi.descriptor == "D"
 }
 
 // reflection
-func (self *Field) Type() *Class {
-	className := toClassName(self.descriptor)
-	return self.class.loader.LoadClass(className)
+func (fi *Field) Type() *Class {
+	className := toClassName(fi.descriptor)
+	return fi.class.loader.LoadClass(className)
 }

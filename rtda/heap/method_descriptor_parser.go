@@ -13,75 +13,75 @@ func parseMethodDescriptor(descriptor string) *MethodDescriptor {
 	return parser.parse(descriptor)
 }
 
-func (self *MethodDescriptorParser) parse(descriptor string) *MethodDescriptor {
-	self.raw = descriptor
-	self.parsed = &MethodDescriptor{}
-	self.startParams()
-	self.parseParamTypes()
-	self.endParams()
-	self.parseReturnType()
-	self.finish()
-	return self.parsed
+func (mdp *MethodDescriptorParser) parse(descriptor string) *MethodDescriptor {
+	mdp.raw = descriptor
+	mdp.parsed = &MethodDescriptor{}
+	mdp.startParams()
+	mdp.parseParamTypes()
+	mdp.endParams()
+	mdp.parseReturnType()
+	mdp.finish()
+	return mdp.parsed
 }
 
-func (self *MethodDescriptorParser) startParams() {
-	if self.readUint8() != '(' {
-		self.causePanic()
+func (mdp *MethodDescriptorParser) startParams() {
+	if mdp.readUint8() != '(' {
+		mdp.causePanic()
 	}
 }
-func (self *MethodDescriptorParser) endParams() {
-	if self.readUint8() != ')' {
-		self.causePanic()
+func (mdp *MethodDescriptorParser) endParams() {
+	if mdp.readUint8() != ')' {
+		mdp.causePanic()
 	}
 }
-func (self *MethodDescriptorParser) finish() {
-	if self.offset != len(self.raw) {
-		self.causePanic()
+func (mdp *MethodDescriptorParser) finish() {
+	if mdp.offset != len(mdp.raw) {
+		mdp.causePanic()
 	}
 }
 
-func (self *MethodDescriptorParser) causePanic() {
-	panic("BAD descriptor: " + self.raw)
+func (mdp *MethodDescriptorParser) causePanic() {
+	panic("BAD descriptor: " + mdp.raw)
 }
 
-func (self *MethodDescriptorParser) readUint8() uint8 {
-	b := self.raw[self.offset]
-	self.offset++
+func (mdp *MethodDescriptorParser) readUint8() uint8 {
+	b := mdp.raw[mdp.offset]
+	mdp.offset++
 	return b
 }
-func (self *MethodDescriptorParser) unreadUint8() {
-	self.offset--
+func (mdp *MethodDescriptorParser) unreadUint8() {
+	mdp.offset--
 }
 
-func (self *MethodDescriptorParser) parseParamTypes() {
+func (mdp *MethodDescriptorParser) parseParamTypes() {
 	for {
-		t := self.parseFieldType()
+		t := mdp.parseFieldType()
 		if t != "" {
-			self.parsed.addParameterType(t)
+			mdp.parsed.addParameterType(t)
 		} else {
 			break
 		}
 	}
 }
 
-func (self *MethodDescriptorParser) parseReturnType() {
-	if self.readUint8() == 'V' {
-		self.parsed.returnType = "V"
+func (mdp *MethodDescriptorParser) parseReturnType() {
+	if mdp.readUint8() == 'V' {
+		mdp.parsed.returnType = "V"
 		return
 	}
 
-	self.unreadUint8()
-	t := self.parseFieldType()
+	mdp.unreadUint8()
+	t := mdp.parseFieldType()
 	if t != "" {
-		self.parsed.returnType = t
+		mdp.parsed.returnType = t
 		return
 	}
 
-	self.causePanic()
+	mdp.causePanic()
 }
 
-func (self *MethodDescriptorParser) parseFieldType() string {
-	switch self.readUint8() {
+func (mdp *MethodDescriptorParser) parseFieldType() string {
+	switch mdp.readUint8() {
 	case 'B':
 		return "B"
 	case 'C':
@@ -99,34 +99,34 @@ func (self *MethodDescriptorParser) parseFieldType() string {
 	case 'Z':
 		return "Z"
 	case 'L':
-		return self.parseObjectType()
+		return mdp.parseObjectType()
 	case '[':
-		return self.parseArrayType()
+		return mdp.parseArrayType()
 	default:
-		self.unreadUint8()
+		mdp.unreadUint8()
 		return ""
 	}
 }
 
-func (self *MethodDescriptorParser) parseObjectType() string {
-	unread := self.raw[self.offset:]
+func (mdp *MethodDescriptorParser) parseObjectType() string {
+	unread := mdp.raw[mdp.offset:]
 	semicolonIndex := strings.IndexRune(unread, ';')
 	if semicolonIndex == -1 {
-		self.causePanic()
+		mdp.causePanic()
 		return ""
 	} else {
-		objStart := self.offset - 1
-		objEnd := self.offset + semicolonIndex + 1
-		self.offset = objEnd
-		descriptor := self.raw[objStart:objEnd]
+		objStart := mdp.offset - 1
+		objEnd := mdp.offset + semicolonIndex + 1
+		mdp.offset = objEnd
+		descriptor := mdp.raw[objStart:objEnd]
 		return descriptor
 	}
 }
 
-func (self *MethodDescriptorParser) parseArrayType() string {
-	arrStart := self.offset - 1
-	self.parseFieldType()
-	arrEnd := self.offset
-	descriptor := self.raw[arrStart:arrEnd]
+func (mdp *MethodDescriptorParser) parseArrayType() string {
+	arrStart := mdp.offset - 1
+	mdp.parseFieldType()
+	arrEnd := mdp.offset
+	descriptor := mdp.raw[arrStart:arrEnd]
 	return descriptor
 }
