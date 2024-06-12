@@ -14,22 +14,22 @@ func newMethodRef(cp *ConstantPool, refInfo *classfile.ConstantMethodrefInfo) *M
 	return ref
 }
 
-func (self *MethodRef) ResolvedMethod() *Method {
-	if self.method == nil {
-		self.resolveMethodRef()
+func (mref *MethodRef) ResolvedMethod() *Method {
+	if mref.method == nil {
+		mref.resolveMethodRef()
 	}
-	return self.method
+	return mref.method
 }
 
 // jvms8 5.4.3.3
-func (self *MethodRef) resolveMethodRef() {
-	d := self.cp.class
-	c := self.ResolvedClass()
+func (mref *MethodRef) resolveMethodRef() {
+	d := mref.cp.class
+	c := mref.ResolvedClass()
 	if c.IsInterface() {
 		panic("java.lang.IncompatibleClassChangeError")
 	}
 
-	method := lookupMethod(c, self.name, self.descriptor)
+	method := lookupMethod(c, mref.name, mref.descriptor)
 	if method == nil {
 		panic("java.lang.NoSuchMethodError")
 	}
@@ -37,7 +37,7 @@ func (self *MethodRef) resolveMethodRef() {
 		panic("java.lang.IllegalAccessError")
 	}
 
-	self.method = method
+	mref.method = method
 }
 
 func lookupMethod(class *Class, name, descriptor string) *Method {

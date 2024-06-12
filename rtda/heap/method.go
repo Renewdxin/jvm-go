@@ -4,8 +4,11 @@ import "jvm-go/classfile"
 
 type Method struct {
 	ClassMember
+	// 存放操作数栈
 	maxStack                uint
+	// 存放局部变量表
 	maxLocals               uint
+	// 存放方法字节码
 	code                    []byte
 	exceptionTable          ExceptionTable // todo: rename
 	lineNumberTable         *classfile.LineNumberTableAttribute

@@ -14,18 +14,18 @@ type EnclosingMethodAttribute struct {
 	methodIndex uint16
 }
 
-func (self *EnclosingMethodAttribute) readInfo(reader *ClassReader) {
-	self.classIndex = reader.readUint16()
-	self.methodIndex = reader.readUint16()
+func (e *EnclosingMethodAttribute) readInfo(reader *ClassReader) {
+	e.classIndex = reader.readUint16()
+	e.methodIndex = reader.readUint16()
 }
 
-func (self *EnclosingMethodAttribute) ClassName() string {
-	return self.cp.getClassName(self.classIndex)
+func (e *EnclosingMethodAttribute) ClassName() string {
+	return e.cp.getClassName(e.classIndex)
 }
 
-func (self *EnclosingMethodAttribute) MethodNameAndDescriptor() (string, string) {
-	if self.methodIndex > 0 {
-		return self.cp.getNameAndType(self.methodIndex)
+func (e *EnclosingMethodAttribute) MethodNameAndDescriptor() (string, string) {
+	if e.methodIndex > 0 {
+		return e.cp.getNameAndType(e.methodIndex)
 	} else {
 		return "", ""
 	}

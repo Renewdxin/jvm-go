@@ -45,18 +45,18 @@ func readMember(reader *ClassReader, cp ConstantPool) *MemberInfo {
 	}
 }
 
-func (self *MemberInfo) AccessFlags() uint16 {
-	return self.accessFlags
+func (mIn *MemberInfo) AccessFlags() uint16 {
+	return mIn.accessFlags
 }
-func (self *MemberInfo) Name() string {
-	return self.cp.getUtf8(self.nameIndex)
+func (mIn *MemberInfo) Name() string {
+	return mIn.cp.getUtf8(mIn.nameIndex)
 }
-func (self *MemberInfo) Descriptor() string {
-	return self.cp.getUtf8(self.descriptorIndex)
+func (mIn *MemberInfo) Descriptor() string {
+	return mIn.cp.getUtf8(mIn.descriptorIndex)
 }
 
-func (self *MemberInfo) CodeAttribute() *CodeAttribute {
-	for _, attrInfo := range self.attributes {
+func (mIn *MemberInfo) CodeAttribute() *CodeAttribute {
+	for _, attrInfo := range mIn.attributes {
 		switch attrInfo.(type) {
 		case *CodeAttribute:
 			return attrInfo.(*CodeAttribute)
@@ -65,8 +65,8 @@ func (self *MemberInfo) CodeAttribute() *CodeAttribute {
 	return nil
 }
 
-func (self *MemberInfo) ConstantValueAttribute() *ConstantValueAttribute {
-	for _, attrInfo := range self.attributes {
+func (mIn *MemberInfo) ConstantValueAttribute() *ConstantValueAttribute {
+	for _, attrInfo := range mIn.attributes {
 		switch attrInfo.(type) {
 		case *ConstantValueAttribute:
 			return attrInfo.(*ConstantValueAttribute)
@@ -75,8 +75,8 @@ func (self *MemberInfo) ConstantValueAttribute() *ConstantValueAttribute {
 	return nil
 }
 
-func (self *MemberInfo) ExceptionsAttribute() *ExceptionsAttribute {
-	for _, attrInfo := range self.attributes {
+func (mIn *MemberInfo) ExceptionsAttribute() *ExceptionsAttribute {
+	for _, attrInfo := range mIn.attributes {
 		switch attrInfo.(type) {
 		case *ExceptionsAttribute:
 			return attrInfo.(*ExceptionsAttribute)
@@ -85,18 +85,18 @@ func (self *MemberInfo) ExceptionsAttribute() *ExceptionsAttribute {
 	return nil
 }
 
-func (self *MemberInfo) RuntimeVisibleAnnotationsAttributeData() []byte {
-	return self.getUnparsedAttributeData("RuntimeVisibleAnnotations")
+func (mIn *MemberInfo) RuntimeVisibleAnnotationsAttributeData() []byte {
+	return mIn.getUnparsedAttributeData("RuntimeVisibleAnnotations")
 }
-func (self *MemberInfo) RuntimeVisibleParameterAnnotationsAttributeData() []byte {
-	return self.getUnparsedAttributeData("RuntimeVisibleParameterAnnotationsAttribute")
+func (mIn *MemberInfo) RuntimeVisibleParameterAnnotationsAttributeData() []byte {
+	return mIn.getUnparsedAttributeData("RuntimeVisibleParameterAnnotationsAttribute")
 }
-func (self *MemberInfo) AnnotationDefaultAttributeData() []byte {
-	return self.getUnparsedAttributeData("AnnotationDefault")
+func (mIn *MemberInfo) AnnotationDefaultAttributeData() []byte {
+	return mIn.getUnparsedAttributeData("AnnotationDefault")
 }
 
-func (self *MemberInfo) getUnparsedAttributeData(name string) []byte {
-	for _, attrInfo := range self.attributes {
+func (mIn *MemberInfo) getUnparsedAttributeData(name string) []byte {
+	for _, attrInfo := range mIn.attributes {
 		switch attrInfo.(type) {
 		case *UnparsedAttribute:
 			unparsedAttr := attrInfo.(*UnparsedAttribute)

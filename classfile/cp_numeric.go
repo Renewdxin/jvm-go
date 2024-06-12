@@ -12,12 +12,12 @@ type ConstantIntegerInfo struct {
 	val int32
 }
 
-func (self *ConstantIntegerInfo) readInfo(reader *ClassReader) {
+func (cii *ConstantIntegerInfo) readInfo(reader *ClassReader) {
 	bytes := reader.readUint32()
-	self.val = int32(bytes)
+	cii.val = int32(bytes)
 }
-func (self *ConstantIntegerInfo) Value() int32 {
-	return self.val
+func (cii *ConstantIntegerInfo) Value() int32 {
+	return cii.val
 }
 
 /*
@@ -30,12 +30,12 @@ type ConstantFloatInfo struct {
 	val float32
 }
 
-func (self *ConstantFloatInfo) readInfo(reader *ClassReader) {
+func (cii *ConstantFloatInfo) readInfo(reader *ClassReader) {
 	bytes := reader.readUint32()
-	self.val = math.Float32frombits(bytes)
+	cii.val = math.Float32frombits(bytes)
 }
-func (self *ConstantFloatInfo) Value() float32 {
-	return self.val
+func (cii *ConstantFloatInfo) Value() float32 {
+	return cii.val
 }
 
 /*
@@ -49,12 +49,12 @@ type ConstantLongInfo struct {
 	val int64
 }
 
-func (self *ConstantLongInfo) readInfo(reader *ClassReader) {
+func (cii *ConstantLongInfo) readInfo(reader *ClassReader) {
 	bytes := reader.readUint64()
-	self.val = int64(bytes)
+	cii.val = int64(bytes)
 }
-func (self *ConstantLongInfo) Value() int64 {
-	return self.val
+func (cii *ConstantLongInfo) Value() int64 {
+	return cii.val
 }
 
 /*
@@ -68,10 +68,10 @@ type ConstantDoubleInfo struct {
 	val float64
 }
 
-func (self *ConstantDoubleInfo) readInfo(reader *ClassReader) {
+func (cii *ConstantDoubleInfo) readInfo(reader *ClassReader) {
 	bytes := reader.readUint64()
-	self.val = math.Float64frombits(bytes)
+	cii.val = math.Float64frombits(bytes)
 }
-func (self *ConstantDoubleInfo) Value() float64 {
-	return self.val
+func (cii *ConstantDoubleInfo) Value() float64 {
+	return cii.val
 }

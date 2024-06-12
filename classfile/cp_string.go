@@ -11,9 +11,9 @@ type ConstantStringInfo struct {
 	stringIndex uint16
 }
 
-func (self *ConstantStringInfo) readInfo(reader *ClassReader) {
-	self.stringIndex = reader.readUint16()
+func (csi *ConstantStringInfo) readInfo(reader *ClassReader) {
+	csi.stringIndex = reader.readUint16()
 }
-func (self *ConstantStringInfo) String() string {
-	return self.cp.getUtf8(self.stringIndex)
+func (csi *ConstantStringInfo) String() string {
+	return csi.cp.getUtf8(csi.stringIndex)
 }

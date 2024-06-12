@@ -13,54 +13,54 @@ func newStack(maxSize uint) *Stack {
 	}
 }
 
-func (self *Stack) push(frame *Frame) {
-	if self.size >= self.maxSize {
+func (sta *Stack) push(frame *Frame) {
+	if sta.size >= sta.maxSize {
 		panic("java.lang.StackOverflowError")
 	}
 
-	if self._top != nil {
-		frame.lower = self._top
+	if sta._top != nil {
+		frame.lower = sta._top
 	}
 
-	self._top = frame
-	self.size++
+	sta._top = frame
+	sta.size++
 }
 
-func (self *Stack) pop() *Frame {
-	if self._top == nil {
+func (sta *Stack) pop() *Frame {
+	if sta._top == nil {
 		panic("jvm stack is empty!")
 	}
 
-	top := self._top
-	self._top = top.lower
+	top := sta._top
+	sta._top = top.lower
 	top.lower = nil
-	self.size--
+	sta.size--
 
 	return top
 }
 
-func (self *Stack) top() *Frame {
-	if self._top == nil {
+func (sta *Stack) top() *Frame {
+	if sta._top == nil {
 		panic("jvm stack is empty!")
 	}
 
-	return self._top
+	return sta._top
 }
 
-func (self *Stack) getFrames() []*Frame {
-	frames := make([]*Frame, 0, self.size)
-	for frame := self._top; frame != nil; frame = frame.lower {
+func (sta *Stack) getFrames() []*Frame {
+	frames := make([]*Frame, 0, sta.size)
+	for frame := sta._top; frame != nil; frame = frame.lower {
 		frames = append(frames, frame)
 	}
 	return frames
 }
 
-func (self *Stack) isEmpty() bool {
-	return self._top == nil
+func (sta *Stack) isEmpty() bool {
+	return sta._top == nil
 }
 
-func (self *Stack) clear() {
-	for !self.isEmpty() {
-		self.pop()
+func (sta *Stack) clear() {
+	for !sta.isEmpty() {
+		sta.pop()
 	}
 }

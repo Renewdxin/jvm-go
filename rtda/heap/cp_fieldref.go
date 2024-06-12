@@ -2,6 +2,8 @@ package heap
 
 import "jvm-go/classfile"
 
+
+// FieldRef结构体继承了MemberRef结构体，并包含一个指向Field类型的字段。
 type FieldRef struct {
 	MemberRef
 	field *Field
@@ -14,18 +16,19 @@ func newFieldRef(cp *ConstantPool, refInfo *classfile.ConstantFieldrefInfo) *Fie
 	return ref
 }
 
-func (self *FieldRef) ResolvedField() *Field {
-	if self.field == nil {
-		self.resolveFieldRef()
+// 获取字段引用所指向的字段对象
+func (fr *FieldRef) ResolvedField() *Field {
+	if fr.field == nil {
+		fr.resolveFieldRef()
 	}
-	return self.field
+	return fr.field
 }
 
 // jvms 5.4.3.2
-func (self *FieldRef) resolveFieldRef() {
-	d := self.cp.class
-	c := self.ResolvedClass()
-	field := lookupField(c, self.name, self.descriptor)
+func (fr *FieldRef) resolveFieldRef() {
+	d := fr.cp.class
+	c := fr.ResolvedClass()
+	field := lookupField(c, fr.name, fr.descriptor)
 
 	if field == nil {
 		panic("java.lang.NoSuchFieldError")
@@ -34,9 +37,10 @@ func (self *FieldRef) resolveFieldRef() {
 		panic("java.lang.IllegalAccessError")
 	}
 
-	self.field = field
+	fr.field = field
 }
 
+// 在给定的类中查找与指定名称和描述符匹配的字段对象
 func lookupField(c *Class, name, descriptor string) *Field {
 	for _, field := range c.fields {
 		if field.name == name && field.descriptor == descriptor {

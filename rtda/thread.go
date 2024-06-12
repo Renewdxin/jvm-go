@@ -17,43 +17,44 @@ type Thread struct {
 	// todo
 }
 
+func (th *Thread) NewFrame(method *heap.Method) *Frame {
+	return newFrame(th, method)
+}
+
 func NewThread() *Thread {
 	return &Thread{
 		stack: newStack(1024),
 	}
 }
 
-func (self *Thread) PC() int {
-	return self.pc
+func (th *Thread) PC() int {
+	return th.pc
 }
-func (self *Thread) SetPC(pc int) {
-	self.pc = pc
-}
-
-func (self *Thread) PushFrame(frame *Frame) {
-	self.stack.push(frame)
-}
-func (self *Thread) PopFrame() *Frame {
-	return self.stack.pop()
+func (th *Thread) SetPC(pc int) {
+	th.pc = pc
 }
 
-func (self *Thread) CurrentFrame() *Frame {
-	return self.stack.top()
+func (th *Thread) PushFrame(frame *Frame) {
+	th.stack.push(frame)
 }
-func (self *Thread) TopFrame() *Frame {
-	return self.stack.top()
-}
-func (self *Thread) GetFrames() []*Frame {
-	return self.stack.getFrames()
+func (th *Thread) PopFrame() *Frame {
+	return th.stack.pop()
 }
 
-func (self *Thread) IsStackEmpty() bool {
-	return self.stack.isEmpty()
+func (th *Thread) CurrentFrame() *Frame {
+	return th.stack.top()
 }
-func (self *Thread) ClearStack() {
-	self.stack.clear()
+func (th *Thread) TopFrame() *Frame {
+	return th.stack.top()
+}
+func (th *Thread) GetFrames() []*Frame {
+	return th.stack.getFrames()
 }
 
-func (self *Thread) NewFrame(method *heap.Method) *Frame {
-	return newFrame(self, method)
+func (th *Thread) IsStackEmpty() bool {
+	return th.stack.isEmpty()
 }
+func (th *Thread) ClearStack() {
+	th.stack.clear()
+}
+

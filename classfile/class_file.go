@@ -53,34 +53,34 @@ func Parse(classData []byte) (cf *ClassFile, err error) {
 	return
 }
 
-func (self *ClassFile) read(reader *ClassReader) {
-	self.readAndCheckMagic(reader)
-	self.readAndCheckVersion(reader)
-	self.constantPool = readConstantPool(reader)
-	self.accessFlags = reader.readUint16()
-	self.thisClass = reader.readUint16()
-	self.superClass = reader.readUint16()
-	self.interfaces = reader.readUint16s()
-	self.fields = readMembers(reader, self.constantPool)
-	self.methods = readMembers(reader, self.constantPool)
-	self.attributes = readAttributes(reader, self.constantPool)
+func (cf *ClassFile) read(reader *ClassReader) {
+	cf.readAndCheckMagic(reader)
+	cf.readAndCheckVersion(reader)
+	cf.constantPool = readConstantPool(reader)
+	cf.accessFlags = reader.readUint16()
+	cf.thisClass = reader.readUint16()
+	cf.superClass = reader.readUint16()
+	cf.interfaces = reader.readUint16s()
+	cf.fields = readMembers(reader, cf.constantPool)
+	cf.methods = readMembers(reader, cf.constantPool)
+	cf.attributes = readAttributes(reader, cf.constantPool)
 }
 
-func (self *ClassFile) readAndCheckMagic(reader *ClassReader) {
+func (cf *ClassFile) readAndCheckMagic(reader *ClassReader) {
 	magic := reader.readUint32()
 	if magic != 0xCAFEBABE {
 		panic("java.lang.ClassFormatError: magic!")
 	}
 }
 
-func (self *ClassFile) readAndCheckVersion(reader *ClassReader) {
-	self.minorVersion = reader.readUint16()
-	self.majorVersion = reader.readUint16()
-	switch self.majorVersion {
+func (cf *ClassFile) readAndCheckVersion(reader *ClassReader) {
+	cf.minorVersion = reader.readUint16()
+	cf.majorVersion = reader.readUint16()
+	switch cf.majorVersion {
 	case 45:
 		return
 	case 46, 47, 48, 49, 50, 51, 52:
-		if self.minorVersion == 0 {
+		if cf.minorVersion == 0 {
 			return
 		}
 	}
@@ -88,46 +88,46 @@ func (self *ClassFile) readAndCheckVersion(reader *ClassReader) {
 	panic("java.lang.UnsupportedClassVersionError!")
 }
 
-func (self *ClassFile) MinorVersion() uint16 {
-	return self.minorVersion
+func (cf *ClassFile) MinorVersion() uint16 {
+	return cf.minorVersion
 }
-func (self *ClassFile) MajorVersion() uint16 {
-	return self.majorVersion
+func (cf *ClassFile) MajorVersion() uint16 {
+	return cf.majorVersion
 }
-func (self *ClassFile) ConstantPool() ConstantPool {
-	return self.constantPool
+func (cf *ClassFile) ConstantPool() ConstantPool {
+	return cf.constantPool
 }
-func (self *ClassFile) AccessFlags() uint16 {
-	return self.accessFlags
+func (cf *ClassFile) AccessFlags() uint16 {
+	return cf.accessFlags
 }
-func (self *ClassFile) Fields() []*MemberInfo {
-	return self.fields
+func (cf *ClassFile) Fields() []*MemberInfo {
+	return cf.fields
 }
-func (self *ClassFile) Methods() []*MemberInfo {
-	return self.methods
-}
-
-func (self *ClassFile) ClassName() string {
-	return self.constantPool.getClassName(self.thisClass)
+func (cf *ClassFile) Methods() []*MemberInfo {
+	return cf.methods
 }
 
-func (self *ClassFile) SuperClassName() string {
-	if self.superClass > 0 {
-		return self.constantPool.getClassName(self.superClass)
+func (cf *ClassFile) ClassName() string {
+	return cf.constantPool.getClassName(cf.thisClass)
+}
+
+func (cf *ClassFile) SuperClassName() string {
+	if cf.superClass > 0 {
+		return cf.constantPool.getClassName(cf.superClass)
 	}
 	return ""
 }
 
-func (self *ClassFile) InterfaceNames() []string {
-	interfaceNames := make([]string, len(self.interfaces))
-	for i, cpIndex := range self.interfaces {
-		interfaceNames[i] = self.constantPool.getClassName(cpIndex)
+func (cf *ClassFile) InterfaceNames() []string {
+	interfaceNames := make([]string, len(cf.interfaces))
+	for i, cpIndex := range cf.interfaces {
+		interfaceNames[i] = cf.constantPool.getClassName(cpIndex)
 	}
 	return interfaceNames
 }
 
-func (self *ClassFile) SourceFileAttribute() *SourceFileAttribute {
-	for _, attrInfo := range self.attributes {
+func (cf *ClassFile) SourceFileAttribute() *SourceFileAttribute {
+	for _, attrInfo := range cf.attributes {
 		switch attrInfo.(type) {
 		case *SourceFileAttribute:
 			return attrInfo.(*SourceFileAttribute)

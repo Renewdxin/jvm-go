@@ -25,26 +25,26 @@ func readConstantPool(reader *ClassReader) ConstantPool {
 	return cp
 }
 
-func (self ConstantPool) getConstantInfo(index uint16) ConstantInfo {
-	if cpInfo := self[index]; cpInfo != nil {
+func (cp ConstantPool) getConstantInfo(index uint16) ConstantInfo {
+	if cpInfo := cp[index]; cpInfo != nil {
 		return cpInfo
 	}
 	panic(fmt.Errorf("Invalid constant pool index: %v!", index))
 }
 
-func (self ConstantPool) getNameAndType(index uint16) (string, string) {
-	ntInfo := self.getConstantInfo(index).(*ConstantNameAndTypeInfo)
-	name := self.getUtf8(ntInfo.nameIndex)
-	_type := self.getUtf8(ntInfo.descriptorIndex)
+func (cp ConstantPool) getNameAndType(index uint16) (string, string) {
+	ntInfo := cp.getConstantInfo(index).(*ConstantNameAndTypeInfo)
+	name := cp.getUtf8(ntInfo.nameIndex)
+	_type := cp.getUtf8(ntInfo.descriptorIndex)
 	return name, _type
 }
 
-func (self ConstantPool) getClassName(index uint16) string {
-	classInfo := self.getConstantInfo(index).(*ConstantClassInfo)
-	return self.getUtf8(classInfo.nameIndex)
+func (cp ConstantPool) getClassName(index uint16) string {
+	classInfo := cp.getConstantInfo(index).(*ConstantClassInfo)
+	return cp.getUtf8(classInfo.nameIndex)
 }
 
-func (self ConstantPool) getUtf8(index uint16) string {
-	utf8Info := self.getConstantInfo(index).(*ConstantUtf8Info)
+func (cp ConstantPool) getUtf8(index uint16) string {
+	utf8Info := cp.getConstantInfo(index).(*ConstantUtf8Info)
 	return utf8Info.str
 }

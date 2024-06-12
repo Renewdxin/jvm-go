@@ -27,14 +27,14 @@ type ConstantMemberrefInfo struct {
 	nameAndTypeIndex uint16
 }
 
-func (self *ConstantMemberrefInfo) readInfo(reader *ClassReader) {
-	self.classIndex = reader.readUint16()
-	self.nameAndTypeIndex = reader.readUint16()
+func (cni *ConstantMemberrefInfo) readInfo(reader *ClassReader) {
+	cni.classIndex = reader.readUint16()
+	cni.nameAndTypeIndex = reader.readUint16()
 }
 
-func (self *ConstantMemberrefInfo) ClassName() string {
-	return self.cp.getClassName(self.classIndex)
+func (cni *ConstantMemberrefInfo) ClassName() string {
+	return cni.cp.getClassName(cni.classIndex)
 }
-func (self *ConstantMemberrefInfo) NameAndDescriptor() (string, string) {
-	return self.cp.getNameAndType(self.nameAndTypeIndex)
+func (cni *ConstantMemberrefInfo) NameAndDescriptor() (string, string) {
+	return cni.cp.getNameAndType(cni.nameAndTypeIndex)
 }

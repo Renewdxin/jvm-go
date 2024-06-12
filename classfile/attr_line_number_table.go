@@ -19,20 +19,20 @@ type LineNumberTableEntry struct {
 	lineNumber uint16
 }
 
-func (self *LineNumberTableAttribute) readInfo(reader *ClassReader) {
+func (lnta *LineNumberTableAttribute) readInfo(reader *ClassReader) {
 	lineNumberTableLength := reader.readUint16()
-	self.lineNumberTable = make([]*LineNumberTableEntry, lineNumberTableLength)
-	for i := range self.lineNumberTable {
-		self.lineNumberTable[i] = &LineNumberTableEntry{
+	lnta.lineNumberTable = make([]*LineNumberTableEntry, lineNumberTableLength)
+	for i := range lnta.lineNumberTable {
+		lnta.lineNumberTable[i] = &LineNumberTableEntry{
 			startPc:    reader.readUint16(),
 			lineNumber: reader.readUint16(),
 		}
 	}
 }
 
-func (self *LineNumberTableAttribute) GetLineNumber(pc int) int {
-	for i := len(self.lineNumberTable) - 1; i >= 0; i-- {
-		entry := self.lineNumberTable[i]
+func (lnta *LineNumberTableAttribute) GetLineNumber(pc int) int {
+	for i := len(lnta.lineNumberTable) - 1; i >= 0; i-- {
+		entry := lnta.lineNumberTable[i]
 		if pc >= int(entry.startPc) {
 			return int(entry.lineNumber)
 		}

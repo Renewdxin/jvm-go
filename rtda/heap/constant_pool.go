@@ -5,6 +5,12 @@ import "jvm-go/classfile"
 
 type Constant interface{}
 
+/*
+	运行时常量池主要存放两类信息：字面量（literal）和符号引用（symbolic reference）。
+	字面量包括整数、浮点数和字符串字面量；
+	符号引用包括类符号引用、字段符号引用、方法符号引用和接口方法符号引用。
+*/
+
 type ConstantPool struct {
 	class  *Class
 	consts []Constant
@@ -17,6 +23,7 @@ func newConstantPool(class *Class, cfCp classfile.ConstantPool) *ConstantPool {
 
 	for i := 1; i < cpCount; i++ {
 		cpInfo := cfCp[i]
+		
 		switch cpInfo.(type) {
 		case *classfile.ConstantIntegerInfo:
 			intInfo := cpInfo.(*classfile.ConstantIntegerInfo)
@@ -49,9 +56,9 @@ func newConstantPool(class *Class, cfCp classfile.ConstantPool) *ConstantPool {
 			consts[i] = newInterfaceMethodRef(rtCp, methodrefInfo)
 		default:
 			// todo
+			consts[i] = nil
 		}
 	}
-
 	return rtCp
 }
 

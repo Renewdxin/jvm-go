@@ -44,28 +44,28 @@ func getSourceFile(cf *classfile.ClassFile) string {
 }
 
 func (cl *Class) IsPublic() bool {
-	return 0 != cl.accessFlags&ACC_PUBLIC
+	return cl.accessFlags&ACC_PUBLIC != 0
 }
 func (cl *Class) IsFinal() bool {
-	return 0 != cl.accessFlags&ACC_FINAL
+	return cl.accessFlags&ACC_FINAL != 0
 }
 func (cl *Class) IsSuper() bool {
-	return 0 != cl.accessFlags&ACC_SUPER
+	return cl.accessFlags&ACC_SUPER != 0
 }
 func (cl *Class) IsInterface() bool {
-	return 0 != cl.accessFlags&ACC_INTERFACE
+	return cl.accessFlags&ACC_INTERFACE != 0
 }
 func (cl *Class) IsAbstract() bool {
-	return 0 != cl.accessFlags&ACC_ABSTRACT
+	return cl.accessFlags&ACC_ABSTRACT != 0
 }
 func (cl *Class) IsSynthetic() bool {
-	return 0 != cl.accessFlags&ACC_SYNTHETIC
+	return cl.accessFlags&ACC_SYNTHETIC != 0
 }
 func (cl *Class) IsAnnotation() bool {
-	return 0 != cl.accessFlags&ACC_ANNOTATION
+	return cl.accessFlags&ACC_ANNOTATION != 0
 }
 func (cl *Class) IsEnum() bool {
-	return 0 != cl.accessFlags&ACC_ENUM
+	return cl.accessFlags&ACC_ENUM != 0
 }
 
 // getters
