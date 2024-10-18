@@ -5,48 +5,53 @@ import "errors"
 import "io/ioutil"
 import "path/filepath"
 
+// 压缩包类路径
 type ZipEntry struct {
+	// 压缩包的绝对路径
 	absPath string
+	// 压缩包的读取器
 	zipRC   *zip.ReadCloser
 }
 
+// 创建一个ZipEntry对象
 func newZipEntry(path string) *ZipEntry {
 	absPath, err := filepath.Abs(path)
 	if err != nil {
 		panic(err)
 	}
-
+	// 返回一个ZipEntry对象，其中absPath是压缩包的绝对路径，zipRC是压缩包的读取器
 	return &ZipEntry{absPath, nil}
 }
 
-func (self *ZipEntry) readClass(className string) ([]byte, Entry, error) {
-	if self.zipRC == nil {
-		err := self.openJar()
+// 读取类文件
+func (zipE *ZipEntry) readClass(className string) ([]byte, Entry, error) {
+	if zipE.zipRC == nil {
+		err := zipE.openJar()
 		if err != nil {
 			return nil, nil, err
 		}
 	}
 
-	classFile := self.findClass(className)
+	classFile := zipE.findClass(className)
 	if classFile == nil {
 		return nil, nil, errors.New("class not found: " + className)
 	}
 
 	data, err := readClass(classFile)
-	return data, self, err
+	return data, zipE, err
 }
 
 // todo: close zip
-func (self *ZipEntry) openJar() error {
-	r, err := zip.OpenReader(self.absPath)
+func (zipE *ZipEntry) openJar() error {
+	r, err := zip.OpenReader(zipE.absPath)
 	if err == nil {
-		self.zipRC = r
+		zipE.zipRC = r
 	}
 	return err
 }
 
-func (self *ZipEntry) findClass(className string) *zip.File {
-	for _, f := range self.zipRC.File {
+func (zipE *ZipEntry) findClass(className string) *zip.File {
+	for _, f := range zipE.zipRC.File {
 		if f.Name == className {
 			return f
 		}
@@ -68,6 +73,6 @@ func readClass(classFile *zip.File) ([]byte, error) {
 	return data, nil
 }
 
-func (self *ZipEntry) String() string {
-	return self.absPath
+func (zipE *ZipEntry) String() string {
+	return zipE.absPath
 }
