@@ -4,13 +4,18 @@ import "jvm-go/rtda/heap"
 
 // stack frame
 type Frame struct {
-	lower        *Frame // stack is implemented as linked list
+	// 用于实现链表结构
+	lower        *Frame 
+	// 局部变量表
 	localVars    LocalVars
+	// 操作数栈
 	operandStack *OperandStack
-	// 实现指令跳转
+	// 线程
 	thread       *Thread
+	// 方法
 	method       *heap.Method
-	nextPC       int // the next instruction after the call
+	// 下一条指令的地址
+	nextPC       int 
 }
 
 func newFrame(thread *Thread, method *heap.Method) *Frame {

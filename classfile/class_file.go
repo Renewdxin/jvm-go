@@ -22,20 +22,32 @@ ClassFile {
     attribute_info attributes[attributes_count];
 }
 */
+
+// ClassFile结构体包含类文件的所有信息
 type ClassFile struct {
 	//magic      uint32
 	minorVersion uint16
+	// 次版本号
 	majorVersion uint16
+	// 常量池
 	constantPool ConstantPool
+	// 访问标志
 	accessFlags  uint16
+	// 当前类索引
 	thisClass    uint16
+	// 父类索引
 	superClass   uint16
+	// 接口索引
 	interfaces   []uint16
+	// 字段
 	fields       []*MemberInfo
+	// 方法
 	methods      []*MemberInfo
+	// 属性
 	attributes   []AttributeInfo
 }
 
+// Parse函数解析字节码，返回ClassFile结构体
 func Parse(classData []byte) (cf *ClassFile, err error) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -53,6 +65,7 @@ func Parse(classData []byte) (cf *ClassFile, err error) {
 	return
 }
 
+// read函数读取ClassFile结构体中的所有信息
 func (cf *ClassFile) read(reader *ClassReader) {
 	cf.readAndCheckMagic(reader)
 	cf.readAndCheckVersion(reader)
@@ -88,6 +101,7 @@ func (cf *ClassFile) readAndCheckVersion(reader *ClassReader) {
 	panic("java.lang.UnsupportedClassVersionError!")
 }
 
+// Getter方法，暴露ClassFile结构体中的信息
 func (cf *ClassFile) MinorVersion() uint16 {
 	return cf.minorVersion
 }
@@ -111,6 +125,7 @@ func (cf *ClassFile) ClassName() string {
 	return cf.constantPool.getClassName(cf.thisClass)
 }
 
+// 常量池中获取超类名
 func (cf *ClassFile) SuperClassName() string {
 	if cf.superClass > 0 {
 		return cf.constantPool.getClassName(cf.superClass)

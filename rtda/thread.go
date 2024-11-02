@@ -12,7 +12,9 @@ JVM
         OperandStack
 */
 type Thread struct {
+	// 当前执行的指令地址
 	pc    int // the address of the instruction currently being executed
+	// 栈 
 	stack *Stack
 	// todo
 }

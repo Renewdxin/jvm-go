@@ -10,11 +10,17 @@ type Method struct {
 	maxLocals               uint
 	// 存放方法字节码
 	code                    []byte
+	// 存放异常表
 	exceptionTable          ExceptionTable // todo: rename
+	// 存放行号表
 	lineNumberTable         *classfile.LineNumberTableAttribute
+	// 存放异常
 	exceptions              *classfile.ExceptionsAttribute // todo: rename
+	// 存放参数注解
 	parameterAnnotationData []byte                         // RuntimeVisibleParameterAnnotations_attribute
+	// 存放注解默认值
 	annotationDefaultData   []byte                         // AnnotationDefault_attribute
+	// 存放方法描述符
 	parsedDescriptor        *MethodDescriptor
 	argSlotCount            uint
 }

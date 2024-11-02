@@ -3,6 +3,9 @@ package rtda
 import "math"
 import "jvm-go/rtda/heap"
 
+// 操作数栈
+// 用于存储方法执行过程中的局部变量和操作数
+// slots 用于存储操作数栈中的元素
 type OperandStack struct {
 	size  uint
 	slots []Slot

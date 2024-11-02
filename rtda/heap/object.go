@@ -1,8 +1,11 @@
 package heap
 
 type Object struct {
+	// 类
 	class *Class
+	// 数据
 	data  interface{} // Slots for Object, []int32 for int[] ...
+	// 额外数据
 	extra interface{}
 }
 
