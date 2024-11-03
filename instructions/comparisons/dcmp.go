@@ -1,8 +1,8 @@
 package comparisons
 
 import (
-	"jvm-go/rtda"
 	"jvm-go/instructions/base"
+	"jvm-go/rtda"
 )
 
 // Compare double

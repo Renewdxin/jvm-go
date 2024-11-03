@@ -1,4 +1,4 @@
-package heap // 包声明，表明这段代码属于 heap 包
+package heap
 
 // symbolic reference 类符号引用  ——  注释说明 SymRef 结构体的作用
 type SymRef struct { // 定义 SymRef 结构体

@@ -32,22 +32,22 @@ type ClassFile struct {
 	// 常量池
 	constantPool ConstantPool
 	// 访问标志
-	accessFlags  uint16
+	accessFlags uint16
 	// 当前类索引
-	thisClass    uint16
+	thisClass uint16
 	// 父类索引
-	superClass   uint16
+	superClass uint16
 	// 接口索引
-	interfaces   []uint16
+	interfaces []uint16
 	// 字段
-	fields       []*MemberInfo
+	fields []*MemberInfo
 	// 方法
-	methods      []*MemberInfo
+	methods []*MemberInfo
 	// 属性
-	attributes   []AttributeInfo
+	attributes []AttributeInfo
 }
 
-// Parse函数解析字节码，返回ClassFile结构体
+// Parse 解析字节码，返回ClassFile结构体
 func Parse(classData []byte) (cf *ClassFile, err error) {
 	defer func() {
 		if r := recover(); r != nil {

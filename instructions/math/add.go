@@ -1,7 +1,9 @@
 package math
 
-import "jvm-go/instructions/base"
-import "jvm-go/rtda"
+import (
+	"jvm-go/instructions/base"
+	"jvm-go/rtda"
+)
 
 // Add double
 type DADD struct{ base.NoOperandsInstruction }

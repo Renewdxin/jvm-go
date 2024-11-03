@@ -1,8 +1,8 @@
 package control
 
 import (
-	"jvm-go/rtda"
 	"jvm-go/instructions/base"
+	"jvm-go/rtda"
 )
 
 /*
@@ -21,11 +21,6 @@ highbyte2
 highbyte3
 highbyte4
 jump offsets...
-
-Java语言中的switch-case语句有两种实现方式：
-如果case值可以编码成一个索引表，则实现成tableswitch指令；
-否则实现成lookupswitch指令
-
 */
 // Access jump table by index and jump
 type TABLE_SWITCH struct {
@@ -35,23 +30,23 @@ type TABLE_SWITCH struct {
 	jumpOffsets   []int32
 }
 
-func (swi *TABLE_SWITCH) FetchOperands(reader *base.BytecodeReader) {
+func (self *TABLE_SWITCH) FetchOperands(reader *base.BytecodeReader) {
 	reader.SkipPadding()
-	swi.defaultOffset = reader.ReadInt32()
-	swi.low = reader.ReadInt32()
-	swi.high = reader.ReadInt32()
-	jumpOffsetsCount := swi.high - swi.low + 1
-	swi.jumpOffsets = reader.ReadInt32s(jumpOffsetsCount)
+	self.defaultOffset = reader.ReadInt32()
+	self.low = reader.ReadInt32()
+	self.high = reader.ReadInt32()
+	jumpOffsetsCount := self.high - self.low + 1
+	self.jumpOffsets = reader.ReadInt32s(jumpOffsetsCount)
 }
 
-func (swi *TABLE_SWITCH) Execute(frame *rtda.Frame) {
+func (self *TABLE_SWITCH) Execute(frame *rtda.Frame) {
 	index := frame.OperandStack().PopInt()
 
 	var offset int
-	if index >= swi.low && index <= swi.high {
-		offset = int(swi.jumpOffsets[index-swi.low])
+	if index >= self.low && index <= self.high {
+		offset = int(self.jumpOffsets[index-self.low])
 	} else {
-		offset = int(swi.defaultOffset)
+		offset = int(self.defaultOffset)
 	}
 
 	base.Branch(frame, offset)

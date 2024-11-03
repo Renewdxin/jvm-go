@@ -1,24 +1,24 @@
 package comparisons
 
 import (
-	"jvm-go/rtda"
 	"jvm-go/instructions/base"
+	"jvm-go/rtda"
 )
 
 // Branch if reference comparison succeeds
 type IF_ACMPEQ struct{ base.BranchInstruction }
 
-func (quote *IF_ACMPEQ) Execute(frame *rtda.Frame) {
+func (self *IF_ACMPEQ) Execute(frame *rtda.Frame) {
 	if _acmp(frame) {
-		base.Branch(frame, quote.Offset)
+		base.Branch(frame, self.Offset)
 	}
 }
 
 type IF_ACMPNE struct{ base.BranchInstruction }
 
-func (quote *IF_ACMPNE) Execute(frame *rtda.Frame) {
+func (self *IF_ACMPNE) Execute(frame *rtda.Frame) {
 	if !_acmp(frame) {
-		base.Branch(frame, quote.Offset)
+		base.Branch(frame, self.Offset)
 	}
 }
 

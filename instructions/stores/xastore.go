@@ -6,7 +6,6 @@ import (
 	"jvm-go/rtda/heap"
 )
 
-
 // Store into reference array
 type AASTORE struct{ base.NoOperandsInstruction }
 

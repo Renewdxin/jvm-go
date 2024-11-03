@@ -5,7 +5,6 @@ import (
 	"jvm-go/rtda"
 )
 
-
 // Store long into local variable
 type LSTORE struct{ base.Index8Instruction }
 

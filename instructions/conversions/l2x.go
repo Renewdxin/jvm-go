@@ -5,7 +5,6 @@ import (
 	"jvm-go/rtda"
 )
 
-
 // Convert long to double
 type L2D struct{ base.NoOperandsInstruction }
 

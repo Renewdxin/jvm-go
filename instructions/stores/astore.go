@@ -5,7 +5,6 @@ import (
 	"jvm-go/rtda"
 )
 
-
 // Store reference into local variable
 type ASTORE struct{ base.Index8Instruction }
 

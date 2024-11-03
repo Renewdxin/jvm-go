@@ -5,11 +5,9 @@ import (
 	"jvm-go/rtda"
 )
 
-type SWAP struct {
-    base.NoOperandsInstruction
-}
+// Swap the top two operand stack values
+type SWAP struct{ base.NoOperandsInstruction }
 
-// 交换栈顶元素
 func (self *SWAP) Execute(frame *rtda.Frame) {
 	stack := frame.OperandStack()
 	slot1 := stack.PopSlot()
@@ -17,4 +15,3 @@ func (self *SWAP) Execute(frame *rtda.Frame) {
 	stack.PushSlot(slot1)
 	stack.PushSlot(slot2)
 }
-

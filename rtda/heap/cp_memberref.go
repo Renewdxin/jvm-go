@@ -2,8 +2,7 @@ package heap
 
 import "jvm-go/classfile"
 
-
-// 存放字段和方法符号引用共有的信息
+// MemberRef 存放字段和方法符号引用共有的信息
 type MemberRef struct {
 	SymRef
 	name       string

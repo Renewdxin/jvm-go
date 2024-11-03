@@ -1,7 +1,5 @@
 package conversions
 
-// d2x系列指令把double变量强制转换成其他类型
-
 import (
 	"jvm-go/instructions/base"
 	"jvm-go/rtda"

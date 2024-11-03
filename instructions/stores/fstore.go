@@ -5,7 +5,6 @@ import (
 	"jvm-go/rtda"
 )
 
-
 // Store float into local variable
 type FSTORE struct{ base.Index8Instruction }
 

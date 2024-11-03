@@ -7,12 +7,12 @@ type Classpath struct {
 	// 启动类路径
 	bootClasspath Entry
 	// 扩展类路径
-	extClasspath  Entry
+	extClasspath Entry
 	// 用户类路径
 	userClasspath Entry
 }
 
-// 解析启动类路径和扩展类路径
+// Parse 解析启动类路径和扩展类路径
 func Parse(jreOption, cpOption string) *Classpath {
 	cp := &Classpath{}
 	// 优先使用用户输入的-Xjre选项作为jre目录。如果没有输入该选项，则在当前目录下寻找jre目录
@@ -67,6 +67,7 @@ func (cp *Classpath) parseUserClasspath(cpOption string) {
 	cp.userClasspath = newEntry(cpOption)
 }
 
+// ReadClass
 // className: fully/qualified/ClassName
 func (cp *Classpath) ReadClass(className string) ([]byte, Entry, error) {
 	className = className + ".class"

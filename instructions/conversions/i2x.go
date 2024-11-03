@@ -5,7 +5,6 @@ import (
 	"jvm-go/rtda"
 )
 
-
 // Convert int to byte
 type I2B struct{ base.NoOperandsInstruction }
 

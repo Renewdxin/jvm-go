@@ -5,7 +5,7 @@ import (
 	"jvm-go/rtda"
 )
 
-// int 右位移
+// Shift left int
 type ISHL struct{ base.NoOperandsInstruction }
 
 func (self *ISHL) Execute(frame *rtda.Frame) {
@@ -17,7 +17,7 @@ func (self *ISHL) Execute(frame *rtda.Frame) {
 	stack.PushInt(result)
 }
 
-// int 算术右位移
+// Arithmetic shift right int
 type ISHR struct{ base.NoOperandsInstruction }
 
 func (self *ISHR) Execute(frame *rtda.Frame) {
@@ -29,10 +29,9 @@ func (self *ISHR) Execute(frame *rtda.Frame) {
 	stack.PushInt(result)
 }
 
-// int 逻辑右位移
+// Logical shift right int
 type IUSHR struct{ base.NoOperandsInstruction }
 
-// int变量仅32位，golang位移操作符右侧必须是无符号数，需要进行类型转换
 func (self *IUSHR) Execute(frame *rtda.Frame) {
 	stack := frame.OperandStack()
 	v2 := stack.PopInt()
