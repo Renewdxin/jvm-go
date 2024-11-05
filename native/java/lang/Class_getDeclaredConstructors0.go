@@ -1,19 +1,22 @@
 package lang
 
-import "jvmgo/ch11/instructions/base"
-import "jvmgo/ch11/rtda"
-import "jvmgo/ch11/rtda/heap"
+import (
+	"jvm-go/instructions/base"
+	"jvm-go/rtda"
+	"jvm-go/rtda/heap"
+)
 
 /*
 Constructor(Class<T> declaringClass,
-            Class<?>[] parameterTypes,
-            Class<?>[] checkedExceptions,
-            int modifiers,
-            int slot,
-            String signature,
-            byte[] annotations,
-            byte[] parameterAnnotations)
-}
+
+	            Class<?>[] parameterTypes,
+	            Class<?>[] checkedExceptions,
+	            int modifiers,
+	            int slot,
+	            String signature,
+	            byte[] annotations,
+	            byte[] parameterAnnotations)
+	}
 */
 const _constructorConstructorDescriptor = "" +
 	"(Ljava/lang/Class;" +

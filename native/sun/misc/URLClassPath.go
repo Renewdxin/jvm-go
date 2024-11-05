@@ -1,7 +1,9 @@
 package misc
 
-import "jvmgo/ch11/native"
-import "jvmgo/ch11/rtda"
+import (
+	"jvm-go/native"
+	"jvm-go/rtda"
+)
 
 func init() {
 	native.Register("sun/misc/URLClassPath", "getLookupCacheURLs", "(Ljava/lang/ClassLoader;)[Ljava/net/URL;", getLookupCacheURLs)

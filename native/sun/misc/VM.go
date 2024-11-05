@@ -1,8 +1,10 @@
 package misc
 
-import "jvmgo/ch11/instructions/base"
-import "jvmgo/ch11/native"
-import "jvmgo/ch11/rtda"
+import (
+	"jvm-go/instructions/base"
+	"jvm-go/native"
+	"jvm-go/rtda"
+)
 
 func init() {
 	native.Register("sun/misc/VM", "initialize", "()V", initialize)

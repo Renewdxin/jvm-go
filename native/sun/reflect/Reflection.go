@@ -1,8 +1,10 @@
 package reflect
 
-import "jvmgo/ch11/native"
-import "jvmgo/ch11/rtda"
-import "jvmgo/ch11/rtda/heap"
+import (
+	"jvm-go/native"
+	"jvm-go/rtda"
+	"jvm-go/rtda/heap"
+)
 
 func init() {
 	native.Register("sun/reflect/Reflection", "getCallerClass", "()Ljava/lang/Class;", getCallerClass)

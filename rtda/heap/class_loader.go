@@ -168,7 +168,7 @@ func link(class *Class) {
 	prepare(class) // 准备类
 }
 
-// verify 验证类 (todo: 待实现)
+// verify 验证类
 func verify(class *Class) {
 	// 这里需要实现类的验证逻辑，例如检查类文件的魔数、版本号、常量池等。
 	// 目前只是占位符，实际实现需要根据JVM规范进行。  jvms 4.10

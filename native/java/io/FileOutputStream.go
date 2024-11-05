@@ -1,9 +1,11 @@
 package io
 
-import "os"
-import "unsafe"
-import "jvmgo/ch11/native"
-import "jvmgo/ch11/rtda"
+import (
+	"jvm-go/native"
+	"jvm-go/rtda"
+	"os"
+	"unsafe"
+)
 
 const fos = "java/io/FileOutputStream"
 

@@ -1,7 +1,9 @@
 package lang
 
-import "unsafe"
-import "jvmgo/ch11/rtda/heap"
+import (
+	"jvm-go/rtda/heap"
+	"unsafe"
+)
 
 // []*Class => Class[]
 func toClassArr(loader *heap.ClassLoader, classes []*heap.Class) *heap.Object {

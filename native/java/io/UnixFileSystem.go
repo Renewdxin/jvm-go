@@ -1,10 +1,12 @@
 package io
 
-import "path/filepath"
-import "os"
-import "jvmgo/ch11/native"
-import "jvmgo/ch11/rtda"
-import "jvmgo/ch11/rtda/heap"
+import (
+	"jvm-go/native"
+	"jvm-go/rtda"
+	"jvm-go/rtda/heap"
+	"os"
+	"path/filepath"
+)
 
 const unixfs = "java/io/UnixFileSystem"
 

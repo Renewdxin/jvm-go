@@ -126,6 +126,7 @@ func (cl *Class) GetPackageName() string {
 func (cl *Class) GetMainMethod() *Method {
 	return cl.getMethod("main", "([Ljava/lang/String;)V", true)
 }
+
 func (cl *Class) GetClinitMethod() *Method {
 	return cl.getMethod("<clinit>", "()V", true)
 }

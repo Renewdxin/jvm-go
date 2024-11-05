@@ -1,9 +1,11 @@
 package reflect
 
-import "jvmgo/ch11/instructions/base"
-import "jvmgo/ch11/native"
-import "jvmgo/ch11/rtda"
-import "jvmgo/ch11/rtda/heap"
+import (
+	"jvm-go/instructions/base"
+	"jvm-go/native"
+	"jvm-go/rtda"
+	"jvm-go/rtda/heap"
+)
 
 func init() {
 	native.Register("sun/reflect/NativeConstructorAccessorImpl", "newInstance0", "(Ljava/lang/reflect/Constructor;[Ljava/lang/Object;)Ljava/lang/Object;", newInstance0)

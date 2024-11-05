@@ -1,7 +1,9 @@
 package io
 
-import "jvmgo/ch11/native"
-import "jvmgo/ch11/rtda"
+import (
+	"jvm-go/native"
+	"jvm-go/rtda"
+)
 
 func init() {
 	native.Register("sun/io/Win32ErrorMode", "setErrorMode", "(J)J", setErrorMode)

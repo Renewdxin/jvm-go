@@ -1,7 +1,9 @@
 package lang
 
-import "jvmgo/ch11/native"
-import "jvmgo/ch11/rtda"
+import (
+	"jvm-go/native"
+	"jvm-go/rtda"
+)
 
 func init() {
 	native.Register("java/lang/Thread", "currentThread", "()Ljava/lang/Thread;", currentThread)

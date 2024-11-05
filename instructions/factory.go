@@ -577,6 +577,6 @@ func NewInstruction(opcode byte) base.Instruction {
 		return invoke_native
 	// case 0xff: impdep2
 	default:
-		panic(fmt.Errorf("Unsupported opcode: 0x%x!", opcode))
+		panic(fmt.Errorf("unsupported opcode: 0x%x", opcode))
 	}
 }

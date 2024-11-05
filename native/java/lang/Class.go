@@ -1,10 +1,12 @@
 package lang
 
-import "strings"
-import "jvmgo/ch11/instructions/base"
-import "jvmgo/ch11/native"
-import "jvmgo/ch11/rtda"
-import "jvmgo/ch11/rtda/heap"
+import (
+	"jvm-go/instructions/base"
+	"jvm-go/native"
+	"jvm-go/rtda"
+	"jvm-go/rtda/heap"
+	"strings"
+)
 
 const jlClass = "java/lang/Class"
 
@@ -80,9 +82,11 @@ func isPrimitive(frame *rtda.Frame) {
 }
 
 // private static native Class<?> forName0(String name, boolean initialize,
-//                                         ClassLoader loader,
-//                                         Class<?> caller)
-//     throws ClassNotFoundException;
+//
+//	                                    ClassLoader loader,
+//	                                    Class<?> caller)
+//	throws ClassNotFoundException;
+//
 // (Ljava/lang/String;ZLjava/lang/ClassLoader;Ljava/lang/Class;)Ljava/lang/Class;
 func forName0(frame *rtda.Frame) {
 	vars := frame.LocalVars()

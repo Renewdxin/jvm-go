@@ -3,24 +3,31 @@ package heap
 func (ob *Object) Bytes() []int8 {
 	return ob.data.([]int8)
 }
+
 func (ob *Object) Shorts() []int16 {
 	return ob.data.([]int16)
 }
+
 func (ob *Object) Ints() []int32 {
 	return ob.data.([]int32)
 }
+
 func (ob *Object) Longs() []int64 {
 	return ob.data.([]int64)
 }
+
 func (ob *Object) Chars() []uint16 {
 	return ob.data.([]uint16)
 }
+
 func (ob *Object) Floats() []float32 {
 	return ob.data.([]float32)
 }
+
 func (ob *Object) Doubles() []float64 {
 	return ob.data.([]float64)
 }
+
 func (ob *Object) Refs() []*Object {
 	return ob.data.([]*Object)
 }

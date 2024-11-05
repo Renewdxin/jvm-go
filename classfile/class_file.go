@@ -102,21 +102,27 @@ func (cf *ClassFile) readAndCheckVersion(reader *ClassReader) {
 }
 
 // Getter方法，暴露ClassFile结构体中的信息
+
 func (cf *ClassFile) MinorVersion() uint16 {
 	return cf.minorVersion
 }
+
 func (cf *ClassFile) MajorVersion() uint16 {
 	return cf.majorVersion
 }
+
 func (cf *ClassFile) ConstantPool() ConstantPool {
 	return cf.constantPool
 }
+
 func (cf *ClassFile) AccessFlags() uint16 {
 	return cf.accessFlags
 }
+
 func (cf *ClassFile) Fields() []*MemberInfo {
 	return cf.fields
 }
+
 func (cf *ClassFile) Methods() []*MemberInfo {
 	return cf.methods
 }

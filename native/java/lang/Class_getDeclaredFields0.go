@@ -1,17 +1,20 @@
 package lang
 
-import "jvmgo/ch11/instructions/base"
-import "jvmgo/ch11/rtda"
-import "jvmgo/ch11/rtda/heap"
+import (
+	"jvm-go/instructions/base"
+	"jvm-go/rtda"
+	"jvm-go/rtda/heap"
+)
 
 /*
 Field(Class<?> declaringClass,
-      String name,
-      Class<?> type,
-      int modifiers,
-      int slot,
-      String signature,
-      byte[] annotations)
+
+	String name,
+	Class<?> type,
+	int modifiers,
+	int slot,
+	String signature,
+	byte[] annotations)
 */
 const _fieldConstructorDescriptor = "" +
 	"(Ljava/lang/Class;" +

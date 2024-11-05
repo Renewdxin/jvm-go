@@ -1,8 +1,10 @@
 package lang
 
-import "runtime"
-import "jvmgo/ch11/native"
-import "jvmgo/ch11/rtda"
+import (
+	"jvm-go/native"
+	"jvm-go/rtda"
+	"runtime"
+)
 
 const jlRuntime = "java/lang/Runtime"
 

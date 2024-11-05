@@ -1,9 +1,11 @@
 package lang
 
-import "fmt"
-import "jvmgo/ch11/native"
-import "jvmgo/ch11/rtda"
-import "jvmgo/ch11/rtda/heap"
+import (
+	"fmt"
+	"jvm-go/native"
+	"jvm-go/rtda"
+	"jvm-go/rtda/heap"
+)
 
 const jlThrowable = "java/lang/Throwable"
 

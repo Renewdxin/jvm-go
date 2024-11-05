@@ -3,18 +3,23 @@ package rtda
 import "math"
 import "jvm-go/rtda/heap"
 
-// 操作数栈
+// OperandStack 操作数栈
 // 用于存储方法执行过程中的局部变量和操作数
 // slots 用于存储操作数栈中的元素
 type OperandStack struct {
-	size  uint
+	size  uint // 表示当前容量
 	slots []Slot
+}
+
+func NewOperandStack(maxStack uint) *OperandStack {
+	return newOperandStack(maxStack)
 }
 
 func newOperandStack(maxStack uint) *OperandStack {
 	if maxStack > 0 {
 		return &OperandStack{
 			slots: make([]Slot, maxStack),
+			size:  0,
 		}
 	}
 	return nil
@@ -102,9 +107,4 @@ func (osa *OperandStack) PushBoolean(val bool) {
 }
 func (osa *OperandStack) PopBoolean() bool {
 	return osa.PopInt() == 1
-}
-
-// todo
-func NewOperandStack(maxStack uint) *OperandStack {
-	return newOperandStack(maxStack)
 }

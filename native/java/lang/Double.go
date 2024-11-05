@@ -1,8 +1,10 @@
 package lang
 
-import "math"
-import "jvmgo/ch11/native"
-import "jvmgo/ch11/rtda"
+import (
+	"jvm-go/native"
+	"jvm-go/rtda"
+	"math"
+)
 
 const jlDouble = "java/lang/Double"
 

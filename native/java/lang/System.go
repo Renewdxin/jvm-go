@@ -1,11 +1,13 @@
 package lang
 
-import "runtime"
-import "time"
-import "jvmgo/ch11/instructions/base"
-import "jvmgo/ch11/native"
-import "jvmgo/ch11/rtda"
-import "jvmgo/ch11/rtda/heap"
+import (
+	"jvm-go/instructions/base"
+	"jvm-go/native"
+	"jvm-go/rtda"
+	"jvm-go/rtda/heap"
+	"runtime"
+	"time"
+)
 
 const jlSystem = "java/lang/System"
 
