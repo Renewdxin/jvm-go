@@ -19,10 +19,10 @@ const (
 )
 
 /*
-cp_info {
-    u1 tag;
-    u1 info[];
-}
+	cp_info {
+	    u1 tag;
+	    u1 info[];
+	}
 */
 type ConstantInfo interface {
 	readInfo(reader *ClassReader)

@@ -4,11 +4,11 @@ import "fmt"
 import "unicode/utf16"
 
 /*
-CONSTANT_Utf8_info {
-    u1 tag;
-    u2 length;
-    u1 bytes[length];
-}
+	CONSTANT_Utf8_info {
+	    u1 tag;
+	    u2 length;
+	    u1 bytes[length];
+	}
 */
 type ConstantUtf8Info struct {
 	str string
@@ -79,7 +79,7 @@ func decodeMUTF8(bytearr []byte) string {
 			char2 = uint16(bytearr[count-2])
 			char3 = uint16(bytearr[count-1])
 			if char2&0xC0 != 0x80 || char3&0xC0 != 0x80 {
-				panic(fmt.Errorf("malformed input around byte %v", (count - 1)))
+				panic(fmt.Errorf("malformed input around byte %v", count-1))
 			}
 			chararr[chararr_count] = c&0x0F<<12 | char2&0x3F<<6 | char3&0x3F<<0
 			chararr_count++

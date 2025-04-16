@@ -1,11 +1,11 @@
 package classfile
 
 /*
-Signature_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 signature_index;
-}
+	Signature_attribute {
+	    u2 attribute_name_index;
+	    u4 attribute_length;
+	    u2 signature_index;
+	}
 */
 type SignatureAttribute struct {
 	cp             ConstantPool

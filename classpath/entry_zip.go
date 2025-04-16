@@ -10,7 +10,7 @@ type ZipEntry struct {
 	// 压缩包的绝对路径
 	absPath string
 	// 压缩包的读取器
-	zipRC   *zip.ReadCloser
+	zipRC *zip.ReadCloser
 }
 
 // 创建一个ZipEntry对象

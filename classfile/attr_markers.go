@@ -1,20 +1,20 @@
 package classfile
 
 /*
-Deprecated_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-}
+	Deprecated_attribute {
+	    u2 attribute_name_index;
+	    u4 attribute_length;
+	}
 */
 type DeprecatedAttribute struct {
 	MarkerAttribute
 }
 
 /*
-Synthetic_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-}
+	Synthetic_attribute {
+	    u2 attribute_name_index;
+	    u4 attribute_length;
+	}
 */
 type SyntheticAttribute struct {
 	MarkerAttribute

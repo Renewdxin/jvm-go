@@ -2,7 +2,6 @@ package heap
 
 import "jvm-go/classfile"
 
-
 // FieldRef结构体继承了MemberRef结构体，并包含一个指向Field类型的字段。
 type FieldRef struct {
 	MemberRef

@@ -1,12 +1,12 @@
 package classfile
 
 /*
-EnclosingMethod_attribute {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    u2 class_index;
-    u2 method_index;
-}
+	EnclosingMethod_attribute {
+	    u2 attribute_name_index;
+	    u4 attribute_length;
+	    u2 class_index;
+	    u2 method_index;
+	}
 */
 type EnclosingMethodAttribute struct {
 	cp          ConstantPool

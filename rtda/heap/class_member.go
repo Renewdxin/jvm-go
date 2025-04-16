@@ -9,7 +9,7 @@ type ClassMember struct {
 	signature      string
 	annotationData []byte // RuntimeVisibleAnnotations_attribute
 	// class字段存放Class结构体指针，这样可以通过字段或方法访问到它所属的类
-	class          *Class
+	class *Class
 }
 
 func (clm *ClassMember) copyMemberInfo(memberInfo *classfile.MemberInfo) {
