@@ -14,23 +14,57 @@ class names:  - 注释：列出了JVM中类名的几种类型
   - non-array classes: java/lang/Object ... - 非数组类
   - array classes: [Ljava/lang/Object; ... - 数组类
 */
+// 类加载器类型常量
+const (
+	BootstrapClassLoader   = iota // 引导类加载器
+	ExtensionClassLoader          // 扩展类加载器
+	ApplicationClassLoader        // 应用类加载器
+	UserDefinedClassLoader        // 用户自定义类加载器
+)
+
 type ClassLoader struct { // 定义类加载器结构体
+	parent      *ClassLoader         // 父类加载器
 	cp          *classpath.Classpath // 类路径，用于查找和加载类文件
 	verboseFlag bool                 // 是否启用 verbose 输出，用于调试
 	classMap    map[string]*Class    // 已加载的类，key 为类名，value 为 Class 结构体指针
+	loaderType  int                  // 类加载器类型
 }
 
 // NewClassLoader 创建一个新的类加载器
 func NewClassLoader(cp *classpath.Classpath, verboseFlag bool) *ClassLoader {
-	loader := &ClassLoader{
+	// 创建引导类加载器
+	bootstrapLoader := &ClassLoader{
+		parent:      nil, // 引导类加载器没有父类加载器
 		cp:          cp,
 		verboseFlag: verboseFlag,
 		classMap:    make(map[string]*Class),
+		loaderType:  BootstrapClassLoader,
 	}
 
-	loader.loadBasicClasses()     // 加载基础类（例如 java/lang/Class）
-	loader.loadPrimitiveClasses() // 加载基本类型类（例如 int, boolean 等）
-	return loader
+	// 创建扩展类加载器
+	extensionLoader := &ClassLoader{
+		parent:      bootstrapLoader,
+		cp:          cp,
+		verboseFlag: verboseFlag,
+		classMap:    make(map[string]*Class),
+		loaderType:  ExtensionClassLoader,
+	}
+
+	// 创建应用类加载器
+	applicationLoader := &ClassLoader{
+		parent:      extensionLoader,
+		cp:          cp,
+		verboseFlag: verboseFlag,
+		classMap:    make(map[string]*Class),
+		loaderType:  ApplicationClassLoader,
+	}
+
+	// 加载基础类和基本类型类
+	bootstrapLoader.loadBasicClasses()     // 加载基础类（例如 java/lang/Class）
+	bootstrapLoader.loadPrimitiveClasses() // 加载基本类型类（例如 int, boolean 等）
+
+	// 返回应用类加载器作为默认类加载器
+	return applicationLoader
 }
 
 // loadBasicClasses 加载基础类，例如 java/lang/Class
@@ -65,11 +99,24 @@ func (cl *ClassLoader) loadPrimitiveClass(className string) {
 }
 
 // LoadClass 加载类，如果类已经加载，则直接返回
+// 实现双亲委派机制
 func (cl *ClassLoader) LoadClass(name string) *Class {
-	if class, ok := cl.classMap[name]; ok { // 检查类是否已经加载
-		return class // 如果已加载，则直接返回
+	// 1. 检查类是否已经被当前类加载器加载
+	if class, ok := cl.classMap[name]; ok {
+		return class
 	}
 
+	// 2. 双亲委派机制：如果有父类加载器，先委托父类加载器加载
+	if cl.parent != nil {
+		// 尝试由父类加载器加载
+		class := cl.parent.LoadClass(name)
+		// 如果父类加载器成功加载了类，则返回
+		if class != nil {
+			return class
+		}
+	}
+
+	// 3. 父类加载器无法加载，则由当前类加载器加载
 	var class *Class
 	if name[0] == '[' { // 判断是否是数组类
 		class = cl.loadArrayClass(name) // 加载数组类
@@ -77,9 +124,17 @@ func (cl *ClassLoader) LoadClass(name string) *Class {
 		class = cl.loadNonArrayClass(name) // 加载非数组类
 	}
 
+	// 4. 为类创建 java.lang.Class 实例
 	if jlClassClass, ok := cl.classMap["java/lang/Class"]; ok { // 获取 java/lang/Class 类
 		class.jClass = jlClassClass.NewObject() // 创建对应的 java/lang/Class 对象
 		class.jClass.extra = class              // 存储 Class 结构体指针
+	} else if cl.parent != nil {
+		// 如果当前类加载器没有加载 java/lang/Class，尝试从父类加载器获取
+		jlClassClass := cl.parent.LoadClass("java/lang/Class")
+		if jlClassClass != nil {
+			class.jClass = jlClassClass.NewObject()
+			class.jClass.extra = class
+		}
 	}
 
 	return class
@@ -87,6 +142,24 @@ func (cl *ClassLoader) LoadClass(name string) *Class {
 
 // loadArrayClass 加载数组类
 func (cl *ClassLoader) loadArrayClass(name string) *Class {
+	// 数组类由定义其元素类型的类加载器加载
+	// 获取数组元素类型
+	componentType := getComponentType(name)
+	// 如果是引用类型数组，先加载元素类型
+	if componentType != "" && componentType[0] != '[' && componentType[0] != 'L' {
+		// 如果是基本类型数组，不需要加载元素类型
+	} else if componentType != "" {
+		// 如果是引用类型数组，先加载元素类型
+		if componentType[0] == 'L' {
+			// 去除 L 和 ; 得到类名
+			componentClassName := componentType[1 : len(componentType)-1]
+			cl.LoadClass(componentClassName)
+		} else {
+			// 如果是多维数组，递归加载
+			cl.LoadClass(componentType)
+		}
+	}
+
 	class := &Class{
 		accessFlags: ACC_PUBLIC,                       // 访问标志
 		name:        name,                             // 类名
@@ -98,21 +171,93 @@ func (cl *ClassLoader) loadArrayClass(name string) *Class {
 			cl.LoadClass("java/io/Serializable"), // Serializable 接口
 		},
 	}
-	cl.classMap[name] = class // 将类添加到 classMap 中
+
+	// 将类添加到类加载器的缓存中
+	cl.classMap[name] = class
+
+	if cl.verboseFlag { // 如果启用 verbose 输出
+		fmt.Printf("[Loaded array class %s by %s]\n", name, cl.getLoaderName()) // 打印加载信息
+	}
+
 	return class
+}
+
+// 获取数组的元素类型
+func getComponentType(arrayClassName string) string {
+	// 数组类名以 [ 开头，后面跟着元素类型
+	if arrayClassName[0] != '[' {
+		return ""
+	}
+
+	// 返回 [ 后面的部分作为元素类型
+	return arrayClassName[1:]
 }
 
 // loadNonArrayClass 加载非数组类
 func (cl *ClassLoader) loadNonArrayClass(name string) *Class {
-	data, entry := cl.readClass(name) // 读取类文件数据
-	class := cl.defineClass(data)     // 定义类
-	link(class)                       // 连接类
-
-	if cl.verboseFlag { // 如果启用 verbose 输出
-		fmt.Printf("[Loaded %s from %s]\n", name, entry) // 打印加载信息
+	// 根据类加载器类型决定是否应该加载该类
+	if !cl.isClassLoadableByThisLoader(name) {
+		return nil // 如果当前类加载器不应该加载该类，返回 nil
 	}
 
+	// 读取类文件数据
+	data, entry, err := cl.cp.ReadClass(name)
+	if err != nil {
+		// 如果读取失败，返回 nil，让其他类加载器尝试
+		return nil
+	}
+
+	// 定义类
+	class := cl.defineClass(data)
+	// 连接类
+	link(class)
+
+	if cl.verboseFlag { // 如果启用 verbose 输出
+		fmt.Printf("[Loaded %s from %s by %s]\n", name, entry, cl.getLoaderName()) // 打印加载信息
+	}
+
+	// 将类添加到类加载器的缓存中
+	cl.classMap[name] = class
+
 	return class
+}
+
+// 判断类是否应该由当前类加载器加载
+func (cl *ClassLoader) isClassLoadableByThisLoader(name string) bool {
+	// 根据类加载器类型和类名前缀决定
+	switch cl.loaderType {
+	case BootstrapClassLoader:
+		// 引导类加载器加载 java.*, javax.*, sun.* 等核心类
+		return strings.HasPrefix(name, "java/") ||
+			strings.HasPrefix(name, "javax/") ||
+			strings.HasPrefix(name, "sun/")
+	case ExtensionClassLoader:
+		// 扩展类加载器加载扩展包中的类
+		return !strings.HasPrefix(name, "java/") &&
+			!strings.HasPrefix(name, "javax/") &&
+			!strings.HasPrefix(name, "sun/")
+	case ApplicationClassLoader:
+		// 应用类加载器加载应用程序类路径上的类
+		return true
+	default:
+		return true
+	}
+}
+
+// 获取类加载器名称
+func (cl *ClassLoader) getLoaderName() string {
+	switch cl.loaderType {
+	case BootstrapClassLoader:
+		return "BootstrapClassLoader"
+	case ExtensionClassLoader:
+		return "ExtensionClassLoader"
+	case ApplicationClassLoader:
+		return "ApplicationClassLoader"
+	case UserDefinedClassLoader:
+		return "UserDefinedClassLoader"
+	default:
+		return "UnknownClassLoader"
+	}
 }
 
 func (cl *ClassLoader) readClass(name string) ([]byte, classpath.Entry) {
